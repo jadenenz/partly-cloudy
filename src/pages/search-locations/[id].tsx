@@ -7,6 +7,13 @@ const fetchData = z.object({
   current: z.object({
     temp: z.number(),
     feels_like: z.number(),
+    wind_speed: z.number(),
+    weather: z
+      .object({
+        main: z.string(),
+        description: z.string(),
+      })
+      .array(),
   }),
 })
 
@@ -19,7 +26,15 @@ export default function SearchLocation({
       <CitySearchForm />
       <div className="main-current-city">
         <h1>{geoName}</h1>
-        {convertToFahrenheit(typedData.current.temp)}
+        <div>
+          {convertToFahrenheit(typedData.current.temp)}°F{" "}
+          {typedData.current.weather[0].main}
+        </div>
+        <div>
+          Feels like: {convertToFahrenheit(typedData.current.feels_like)}°F
+          <br />
+          Winds: {typedData.current.wind_speed} m/s
+        </div>
       </div>
     </main>
   )
