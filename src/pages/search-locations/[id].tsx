@@ -1,4 +1,5 @@
 import CitySearchForm from "@/components/city-search-form"
+import HourlyForecast from "@/components/hourly-forecast"
 import { convertToFahrenheit } from "@/lib/temperature-conversions"
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { z } from "zod"
@@ -15,6 +16,12 @@ const fetchData = z.object({
       })
       .array(),
   }),
+  hourly: z
+    .object({
+      dt: z.number(),
+      temp: z.number(),
+    })
+    .array(),
 })
 
 export default function SearchLocation({
@@ -36,6 +43,7 @@ export default function SearchLocation({
           Winds: {typedData.current.wind_speed} m/s
         </div>
       </div>
+      <HourlyForecast hourlyData={typedData.hourly} />
     </main>
   )
 }
@@ -68,7 +76,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     console.log("lat is: ", typedGeoData[0].lat)
     const res = await fetch(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${typedGeoData[0].lat}&lon=${typedGeoData[0].lon}&exclude=minutely,hourly,daily,alerts&appid=${process.env.API_KEY}`
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${typedGeoData[0].lat}&lon=${typedGeoData[0].lon}&exclude=minutely,daily,alerts&appid=${process.env.API_KEY}`
     )
     const data = await res.json()
     console.log("DATA IS: ", data)
