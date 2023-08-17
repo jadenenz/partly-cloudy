@@ -29,22 +29,26 @@ export default function SearchLocation({
   geoName,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <main>
-      <CitySearchForm />
-      <div className="main-current-city">
-        <h1>{geoName}</h1>
-        <div>
-          {convertToFahrenheit(typedData.current.temp)}°F{" "}
-          {typedData.current.weather[0].main}
+    <div className="flex justify-center">
+      <main>
+        <CitySearchForm />
+        <div className="mt-6">
+          <h1>{geoName}</h1>
+          <div>
+            {convertToFahrenheit(typedData.current.temp)}°F{" "}
+            {typedData.current.weather[0].main}
+          </div>
+          <div>
+            Feels like: {convertToFahrenheit(typedData.current.feels_like)}°F
+            <br />
+            Winds: {typedData.current.wind_speed} m/s
+          </div>
         </div>
-        <div>
-          Feels like: {convertToFahrenheit(typedData.current.feels_like)}°F
-          <br />
-          Winds: {typedData.current.wind_speed} m/s
+        <div className="mt-6">
+          <HourlyForecast hourlyData={typedData.hourly} />
         </div>
-      </div>
-      <HourlyForecast hourlyData={typedData.hourly} />
-    </main>
+      </main>
+    </div>
   )
 }
 
