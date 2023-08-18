@@ -16,18 +16,6 @@ const fetchData = z.object({
 export default function Home({
   typedData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  // const [searchValue, setSearchValue] = useState("")
-  // const router = useRouter()
-
-  // function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-  //   setSearchValue(e.target.value)
-  // }
-
-  // function handleClick(e: React.MouseEvent) {
-  //   e.preventDefault()
-  //   router.push(`/search-locations/${searchValue}`)
-  // }
-
   return (
     <main>
       <CitySearchForm />
@@ -37,6 +25,10 @@ export default function Home({
     </main>
   )
 }
+
+export type hourlyDataType = InferGetServerSidePropsType<
+  typeof getServerSideProps
+>
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(
