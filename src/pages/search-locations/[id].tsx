@@ -20,6 +20,11 @@ const fetchData = z.object({
     .object({
       dt: z.number(),
       temp: z.number(),
+      weather: z
+        .object({
+          icon: z.string(),
+        })
+        .array(),
     })
     .array(),
 })

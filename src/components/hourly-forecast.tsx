@@ -1,4 +1,5 @@
 import { convertToFahrenheit } from "@/lib/temperature-conversions"
+import Image from "next/image"
 import { hourlyDataType } from "@/pages"
 import dayjs from "dayjs"
 
@@ -13,18 +14,26 @@ export default function HourlyForecast({ hourlyData }: hourlyDataType) {
   const hourlyMap = selectedTimesFromHourlyData.map((timestamp) => {
     const dayjsTime = dayjs.unix(timestamp.dt)
     return (
-      <li key={timestamp.dt}>
-        <div>{dayjs(dayjsTime).format("h A")}</div>
-        <div>{convertToFahrenheit(timestamp.temp)} °F</div>
+      <li className="flex flex-col items-center" key={timestamp.dt}>
+        <div className="text-sm text-gray-500">
+          {dayjs(dayjsTime).format("h A")}
+        </div>
+        <Image
+          src={`https://openweathermap.org/img/wn/${timestamp.weather[0].icon}@2x.png`}
+          alt="weather icon"
+          height={52}
+          width={52}
+        />
+        <div className="font-bold">{convertToFahrenheit(timestamp.temp)}°</div>
       </li>
     )
   })
 
   return (
-    <div>
+    <div className="p-8 bg-gray-200 rounded-2xl">
       <div>
-        <h1>Hourly</h1>
-        <ul>{hourlyMap}</ul>
+        <p className="font-bold text-gray-500">Today&apos;s Forecast</p>
+        <ul className="flex gap-3 mt-4">{hourlyMap}</ul>
       </div>
     </div>
   )

@@ -1,5 +1,7 @@
 import { useRouter } from "next/router"
 import { useState } from "react"
+import { Input } from "./input"
+import { Button } from "@/components/ui/button"
 
 export default function CitySearchForm() {
   const [searchValue, setSearchValue] = useState("")
@@ -15,14 +17,15 @@ export default function CitySearchForm() {
   }
 
   return (
-    <>
-      <input
-        className="text-gray-900"
+    <div className="flex gap-4 mt-8">
+      <Input
         value={searchValue}
         onChange={handleChange}
         placeholder="Search for cities"
       />
-      <button onClick={handleClick}>Submit</button>
-    </>
+      <Button onClick={handleClick} variant="outline">
+        Submit
+      </Button>
+    </div>
   )
 }
