@@ -19,6 +19,7 @@ export default function CitySearchForm() {
   return (
     <div className="flex gap-4 mt-8">
       <Input
+        className=""
         value={searchValue}
         onChange={handleChange}
         placeholder="Search for cities"

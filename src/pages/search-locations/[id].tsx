@@ -4,12 +4,14 @@ import CurrentWeather from "@/components/current-weather"
 import { convertToFahrenheit } from "@/lib/temperature-conversions"
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { z } from "zod"
+import AirConditions from "@/components/air-conditions"
 
 const fetchData = z.object({
   current: z.object({
     temp: z.number(),
     feels_like: z.number(),
     wind_speed: z.number(),
+    uvi: z.number(),
     weather: z
       .object({
         main: z.string(),
@@ -29,6 +31,15 @@ const fetchData = z.object({
         .array(),
     })
     .array(),
+  daily: z
+    .object({
+      temp: z.object({
+        min: z.number(),
+        max: z.number(),
+      }),
+      rain: z.optional(z.number()),
+    })
+    .array(),
 })
 
 export default function SearchLocation({
@@ -43,6 +54,7 @@ export default function SearchLocation({
         <div className="mt-6">
           <HourlyForecast hourlyData={typedData.hourly} />
         </div>
+        <AirConditions typedData={typedData} />
       </main>
     </div>
   )
@@ -80,7 +92,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     console.log("lat is: ", typedGeoData[0].lat)
     const res = await fetch(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${typedGeoData[0].lat}&lon=${typedGeoData[0].lon}&exclude=minutely,daily,alerts&appid=${process.env.API_KEY}`
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${typedGeoData[0].lat}&lon=${typedGeoData[0].lon}&exclude=minutely,alerts&appid=${process.env.API_KEY}`
     )
     const data = await res.json()
     console.log("DATA IS: ", data)
