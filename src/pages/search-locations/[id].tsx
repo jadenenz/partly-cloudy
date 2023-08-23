@@ -1,5 +1,6 @@
 import CitySearchForm from "@/components/city-search-form"
 import HourlyForecast from "@/components/hourly-forecast"
+import CurrentWeather from "@/components/current-weather"
 import { convertToFahrenheit } from "@/lib/temperature-conversions"
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { z } from "zod"
@@ -13,6 +14,7 @@ const fetchData = z.object({
       .object({
         main: z.string(),
         description: z.string(),
+        icon: z.string(),
       })
       .array(),
   }),
@@ -37,18 +39,7 @@ export default function SearchLocation({
     <div className="flex justify-center">
       <main>
         <CitySearchForm />
-        <div className="mt-6">
-          <h1>{geoName}</h1>
-          <div>
-            {convertToFahrenheit(typedData.current.temp)}°F{" "}
-            {typedData.current.weather[0].main}
-          </div>
-          <div>
-            Feels like: {convertToFahrenheit(typedData.current.feels_like)}°F
-            <br />
-            Winds: {typedData.current.wind_speed} m/s
-          </div>
-        </div>
+        <CurrentWeather geoName={geoName} typedData={typedData} />
         <div className="mt-6">
           <HourlyForecast hourlyData={typedData.hourly} />
         </div>
@@ -56,6 +47,10 @@ export default function SearchLocation({
     </div>
   )
 }
+
+export type hourlyDataType = InferGetServerSidePropsType<
+  typeof getServerSideProps
+>
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const geoSchema = z

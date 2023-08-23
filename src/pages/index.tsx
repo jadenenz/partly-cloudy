@@ -26,10 +26,6 @@ export default function Home({
   )
 }
 
-export type hourlyDataType = InferGetServerSidePropsType<
-  typeof getServerSideProps
->
-
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(
     `https://api.openweathermap.org/data/3.0/onecall?lat=36.1563122&lon=-95.9927436&exclude=minutely,hourly,daily,alerts&appid=${process.env.API_KEY}`

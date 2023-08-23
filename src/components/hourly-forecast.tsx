@@ -1,6 +1,6 @@
 import { convertToFahrenheit } from "@/lib/temperature-conversions"
 import Image from "next/image"
-import { hourlyDataType } from "@/pages"
+import { hourlyDataType } from "@/pages/search-locations/[id]"
 import dayjs from "dayjs"
 
 export default function HourlyForecast({ hourlyData }: hourlyDataType) {
@@ -31,9 +31,9 @@ export default function HourlyForecast({ hourlyData }: hourlyDataType) {
 
   return (
     <div className="p-8 bg-gray-200 rounded-2xl">
-      <div>
-        <p className="font-bold text-gray-500">Today&apos;s Forecast</p>
-        <ul className="flex gap-3 mt-4">{hourlyMap}</ul>
+      <p className="font-bold text-gray-500">Today&apos;s Forecast</p>
+      <div className="flex justify-center">
+        <ul className="flex gap-12 mt-4">{hourlyMap}</ul>
       </div>
     </div>
   )
