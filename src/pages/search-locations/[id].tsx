@@ -5,6 +5,7 @@ import { convertToFahrenheit } from "@/lib/temperature-conversions"
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { z } from "zod"
 import AirConditions from "@/components/air-conditions"
+import DailyForecast from "@/components/daily-forecast"
 
 const fetchData = z.object({
   current: z.object({
@@ -38,6 +39,12 @@ const fetchData = z.object({
         max: z.number(),
       }),
       rain: z.optional(z.number()),
+      dt: z.number(),
+      weather: z
+        .object({
+          icon: z.string(),
+        })
+        .array(),
     })
     .array(),
 })
@@ -55,6 +62,7 @@ export default function SearchLocation({
           <HourlyForecast hourlyData={typedData.hourly} />
         </div>
         <AirConditions typedData={typedData} />
+        <DailyForecast dailyData={typedData.daily} />
       </main>
     </div>
   )
