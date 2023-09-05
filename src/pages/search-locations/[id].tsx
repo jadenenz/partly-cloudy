@@ -6,6 +6,8 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { z } from "zod"
 import AirConditions from "@/components/air-conditions"
 import DailyForecast from "@/components/daily-forecast"
+import Link from "next/link"
+import LocationAlert from "@/components/location-alert"
 
 const fetchData = z.object({
   current: z.object({
@@ -53,17 +55,48 @@ const fetchData = z.object({
 export default function SearchLocation({
   typedData,
   geoName,
+  typedGeoData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log("typedGeo: ", typedGeoData)
+  const locationList = typedGeoData.map((location: any) => {
+    return (
+      <li key={location.lat}>
+        <Link
+          href={`/search-locations/${location.name}${
+            location.state ? "," + location.state : ""
+          },${location.country}`}
+        >
+          {location.name +
+            ", " +
+            (location.state ? location.state + ", " : "") +
+            location.country}
+        </Link>
+      </li>
+    )
+  })
+
   return (
     <div className="flex justify-center">
       <main>
         <CitySearchForm />
-        <CurrentWeather geoName={geoName} typedData={typedData} />
-        <div className="mt-6">
-          <HourlyForecast hourlyData={typedData.hourly} />
+        <div className="md:grid md:grid-cols-[3fr 1fr] md:grid-rows-3 gap-3">
+          <div>
+            <CurrentWeather geoName={geoName} typedData={typedData} />
+          </div>
+          <div className="col-start-1">
+            <HourlyForecast hourlyData={typedData.hourly} />
+          </div>
+          <div className="col-start-1">
+            <AirConditions typedData={typedData} />
+          </div>
+          <div className="col-start-2 row-span-3 row-start-2">
+            <DailyForecast dailyData={typedData.daily} />
+          </div>
         </div>
-        <AirConditions typedData={typedData} />
-        <DailyForecast dailyData={typedData.daily} />
+        <div>
+          <ul>{locationList}</ul>
+        </div>
+        <LocationAlert locationListData={typedGeoData} />
       </main>
     </div>
   )
@@ -109,6 +142,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const typedData = fetchData.parse(data)
     // console.log("typedData: ", typedData)
 
-    return { props: { typedData, geoName } }
+    return { props: { typedData, geoName, typedGeoData } }
   } else return { props: {} }
 }

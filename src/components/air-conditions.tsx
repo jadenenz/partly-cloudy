@@ -5,7 +5,7 @@ import { hourlyDataType } from "@/pages/search-locations/[id]"
 export default function AirConditions({ typedData }: hourlyDataType) {
   console.log("hourlyDat: ", typedData)
   return (
-    <div className="p-8 mt-6 bg-gray-200 rounded-2xl">
+    <div className="p-8 mt-6 bg-gray-200 md:mt-0 rounded-2xl">
       <p className="mb-4 font-bold text-gray-500">Air Conditions</p>
       <div className="grid grid-cols-2 grid-rows-2 gap-3">
         {/* ------------------------------ */}

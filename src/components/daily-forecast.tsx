@@ -46,7 +46,7 @@ export default function DailyForecast({ dailyData }: hourlyDataType) {
   })
 
   return (
-    <div className="p-8 mt-6 bg-gray-200 rounded-2xl">
+    <div className="p-8 mt-6 bg-gray-200 md:mt-0 rounded-2xl">
       <p className="font-bold text-gray-500">7-Day Forecast</p>
       <div className="">
         <ul className="mt-4">{dailyMap}</ul>

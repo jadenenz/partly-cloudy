@@ -15,7 +15,7 @@ export default function HourlyForecast({ hourlyData }: hourlyDataType) {
     const dayjsTime = dayjs.unix(timestamp.dt)
     return (
       <li className="flex flex-col items-center" key={timestamp.dt}>
-        <div className="text-sm text-gray-500">
+        <div className="text-xs text-gray-500 md:text-sm">
           {dayjs(dayjsTime).format("h A")}
         </div>
         <Image
@@ -30,7 +30,7 @@ export default function HourlyForecast({ hourlyData }: hourlyDataType) {
   })
 
   return (
-    <div className="p-8 bg-gray-200 rounded-2xl">
+    <div className="p-8 mt-6 bg-gray-200 md:mt-0 rounded-2xl">
       <p className="font-bold text-gray-500">Today&apos;s Forecast</p>
       <div className="flex justify-center">
         <ul className="flex gap-12 mt-4">{hourlyMap}</ul>
