@@ -5,6 +5,7 @@ import { convertToFahrenheit } from "@/lib/temperature-conversions"
 import React, { useState } from "react"
 import { useRouter } from "next/router"
 import CitySearchForm from "@/components/city-search-form"
+import Link from "next/link"
 
 const fetchData = z.object({
   current: z.object({
@@ -17,12 +18,19 @@ export default function Home({
   typedData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <main>
-      <CitySearchForm />
-      <div className="main-current-city">
-        {convertToFahrenheit(typedData.current.temp)}
+    <div className="h-screen">
+      <div className="w-screen bg-gray-200 navbar">
+        <Link href="/" className="text-xl normal-case btn btn-ghost">
+          partlyCloudy
+        </Link>
       </div>
-    </main>
+      <main>
+        <CitySearchForm />
+        <div className="main-current-city">
+          {convertToFahrenheit(typedData.current.temp)}
+        </div>
+      </main>
+    </div>
   )
 }
 

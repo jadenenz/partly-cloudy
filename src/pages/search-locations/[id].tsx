@@ -56,6 +56,7 @@ export default function SearchLocation({
   typedData,
   geoName,
   typedGeoData,
+  id,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   console.log("typedGeo: ", typedGeoData)
   const locationList = typedGeoData.map((location: any) => {
@@ -76,28 +77,31 @@ export default function SearchLocation({
   })
 
   return (
-    <div className="flex justify-center">
-      <main>
-        <CitySearchForm />
-        <div className="md:grid md:grid-cols-[3fr 1fr] md:grid-rows-3 gap-3">
-          <div>
-            <CurrentWeather geoName={geoName} typedData={typedData} />
+    <div className="h-screen">
+      <div className="w-screen bg-gray-200 navbar">
+        <Link href="/" className="text-xl normal-case btn btn-ghost">
+          partlyCloudy
+        </Link>
+      </div>
+      <div className="flex justify-center">
+        <main>
+          <CitySearchForm id={id} />
+          <div className="md:grid md:grid-cols-[3fr 1fr] md:grid-rows-3 gap-3">
+            <div>
+              <CurrentWeather geoName={geoName} typedData={typedData} />
+            </div>
+            <div className="col-start-1">
+              <HourlyForecast hourlyData={typedData.hourly} />
+            </div>
+            <div className="col-start-1">
+              <AirConditions typedData={typedData} />
+            </div>
+            <div className="col-start-2 row-span-3 row-start-2">
+              <DailyForecast dailyData={typedData.daily} />
+            </div>
           </div>
-          <div className="col-start-1">
-            <HourlyForecast hourlyData={typedData.hourly} />
-          </div>
-          <div className="col-start-1">
-            <AirConditions typedData={typedData} />
-          </div>
-          <div className="col-start-2 row-span-3 row-start-2">
-            <DailyForecast dailyData={typedData.daily} />
-          </div>
-        </div>
-        <div>
-          <ul>{locationList}</ul>
-        </div>
-        <LocationAlert locationListData={typedGeoData} />
-      </main>
+        </main>
+      </div>
     </div>
   )
 }
@@ -142,6 +146,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const typedData = fetchData.parse(data)
     // console.log("typedData: ", typedData)
 
-    return { props: { typedData, geoName, typedGeoData } }
+    return { props: { typedData, geoName, typedGeoData, id } }
   } else return { props: {} }
 }

@@ -2,8 +2,9 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { Input } from "./input"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
-export default function CitySearchForm() {
+export default function CitySearchForm({ id }: any) {
   const [searchValue, setSearchValue] = useState("")
   const router = useRouter()
 
@@ -17,16 +18,19 @@ export default function CitySearchForm() {
   }
 
   return (
-    <div className="flex gap-4 mt-8">
-      <Input
-        className=""
-        value={searchValue}
-        onChange={handleChange}
-        placeholder="Search for cities"
-      />
-      <Button onClick={handleClick} variant="outline">
-        Submit
-      </Button>
+    <div className="flex flex-col">
+      <div className="flex gap-4 mt-8">
+        <Input
+          className=""
+          value={searchValue}
+          onChange={handleChange}
+          placeholder="Search for cities"
+        />
+        <Button onClick={handleClick} variant="outline">
+          Submit
+        </Button>
+      </div>
+      <Link href={`/alternate-locations/${id}`}>Wrong location?</Link>
     </div>
   )
 }
