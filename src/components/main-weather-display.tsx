@@ -3,7 +3,7 @@ import CurrentWeather from "./current-weather"
 import DailyForecast from "./daily-forecast"
 import HourlyForecast from "./hourly-forecast"
 
-export default function MainWeatherDisplay({ geoName, typedData }) {
+export default function MainWeatherDisplay({ geoName, typedData }: any) {
   return (
     <div className="md:grid md:grid-cols-[3fr 1fr] md:grid-rows-3 gap-3">
       <div>

@@ -52,7 +52,7 @@ const fetchData = z.object({
     .array(),
 })
 
-export default function Home({ typedData }) {
+export default function Home({ typedData }: any) {
   return (
     <div className="h-screen">
       <div className="w-screen bg-gray-200 navbar">
