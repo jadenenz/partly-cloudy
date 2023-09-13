@@ -30,7 +30,7 @@ export default function CitySearchForm({ id }: any) {
           Submit
         </Button>
       </div>
-      <Link href={`/alternate-locations/${id}`}>Wrong location?</Link>
+      {id && <Link href={`/alternate-locations/${id}`}>Wrong location?</Link>}
     </div>
   )
 }

@@ -8,6 +8,7 @@ import AirConditions from "@/components/air-conditions"
 import DailyForecast from "@/components/daily-forecast"
 import Link from "next/link"
 import LocationAlert from "@/components/location-alert"
+import MainWeatherDisplay from "@/components/main-weather-display"
 
 const fetchData = z.object({
   current: z.object({
@@ -86,7 +87,8 @@ export default function SearchLocation({
       <div className="flex justify-center">
         <main>
           <CitySearchForm id={id} />
-          <div className="md:grid md:grid-cols-[3fr 1fr] md:grid-rows-3 gap-3">
+          <MainWeatherDisplay geoName={geoName} typedData={typedData} />
+          {/* <div className="md:grid md:grid-cols-[3fr 1fr] md:grid-rows-3 gap-3">
             <div>
               <CurrentWeather geoName={geoName} typedData={typedData} />
             </div>
@@ -99,7 +101,7 @@ export default function SearchLocation({
             <div className="col-start-2 row-span-3 row-start-2">
               <DailyForecast dailyData={typedData.daily} />
             </div>
-          </div>
+          </div> */}
         </main>
       </div>
     </div>
@@ -121,31 +123,33 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     })
     .array()
   if (context && context.params) {
-    const id = context.params.id
-    // console.log("XXXXXXXXXXXXXXXXXXID IS: ", id)
-    const geoRes = await fetch(
-      `https://api.openweathermap.org/geo/1.0/direct?q=${id}&limit=5&appid=${process.env.API_KEY}`
-    )
-    const geoData = await geoRes.json()
+    try {
+      const id = context.params.id
+      const geoRes = await fetch(
+        `https://api.openweathermap.org/geo/1.0/direct?q=${id}&limit=50&appid=${process.env.API_KEY}`
+      )
+      const geoData = await geoRes.json()
 
-    const typedGeoData = geoSchema.parse(geoData)
-    console.log("GEODATA IS: ", geoData)
-    const geoName =
-      typedGeoData[0].name +
-      ", " +
-      (typedGeoData[0].state ? typedGeoData[0].state + ", " : "") +
-      typedGeoData[0].country
+      const typedGeoData = geoSchema.parse(geoData)
+      console.log("GEODATA IS: ", geoData)
+      const geoName =
+        typedGeoData[0].name +
+        ", " +
+        (typedGeoData[0].state ? typedGeoData[0].state + ", " : "") +
+        typedGeoData[0].country
 
-    console.log("lat is: ", typedGeoData[0].lat)
-    const res = await fetch(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${typedGeoData[0].lat}&lon=${typedGeoData[0].lon}&exclude=minutely,alerts&appid=${process.env.API_KEY}`
-    )
-    const data = await res.json()
-    console.log("DATA IS: ", data)
-    // console.log("data: ", data)
-    const typedData = fetchData.parse(data)
-    // console.log("typedData: ", typedData)
+      console.log("lat is: ", typedGeoData[0].lat)
+      const res = await fetch(
+        `https://api.openweathermap.org/data/3.0/onecall?lat=${typedGeoData[0].lat}&lon=${typedGeoData[0].lon}&exclude=minutely,alerts&appid=${process.env.API_KEY}`
+      )
 
-    return { props: { typedData, geoName, typedGeoData, id } }
+      const data = await res.json()
+      console.log("DATA IS: ", data)
+      const typedData = fetchData.parse(data)
+      return { props: { typedData, geoName, typedGeoData, id } }
+    } catch (e) {
+      console.log("error: ", e)
+      return { props: {} }
+    }
   } else return { props: {} }
 }
