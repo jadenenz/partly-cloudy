@@ -18,7 +18,7 @@ export default function CurrentWeather({ geoName, typedData }: hourlyDataType) {
         </div>
         <Image
           className=""
-          src={`https://openweathermap.org/img/wn/${typedData.current.weather[0].icon}@2x.png`}
+          src={`https://openweathermap.org/img/wn/${typedData.current.weather[0].icon}@4x.png`}
           alt="weather icon"
           height={200}
           width={200}

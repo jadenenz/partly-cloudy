@@ -63,7 +63,7 @@ export default function Home({ typedData, geoName }: any) {
       <main className="flex justify-center">
         <div className="flex flex-col mt-8">
           <p className="text-4xl font-bold">
-            Welcome to partyCloudy, enter a city name
+            Welcome to partlyCloudy, enter a city name
           </p>
           <CitySearchForm />
           <MainWeatherDisplay typedData={typedData} geoName={geoName} />
