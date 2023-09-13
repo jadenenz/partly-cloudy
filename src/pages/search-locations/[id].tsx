@@ -78,7 +78,7 @@ export default function SearchLocation({
   })
 
   return (
-    <div className="h-screen">
+    <div className="min-h-screen">
       <div className="w-screen bg-gray-200 navbar">
         <Link href="/" className="text-xl normal-case btn btn-ghost">
           partlyCloudy
