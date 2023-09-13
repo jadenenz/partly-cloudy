@@ -52,7 +52,7 @@ const fetchData = z.object({
     .array(),
 })
 
-export default function Home({ typedData }: any) {
+export default function Home({ typedData, geoName }: any) {
   return (
     <div className="h-screen">
       <div className="w-screen bg-gray-200 navbar">
@@ -66,7 +66,7 @@ export default function Home({ typedData }: any) {
             Welcome to partyCloudy, enter a city name
           </p>
           <CitySearchForm />
-          <MainWeatherDisplay typedData={typedData} geoName={"test"} />
+          <MainWeatherDisplay typedData={typedData} geoName={geoName} />
         </div>
       </main>
     </div>
@@ -112,6 +112,18 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
   const userLocationData = await userLocation.json()
 
+  const locationNameSearch = await fetch(
+    `http://api.openweathermap.org/geo/1.0/reverse?lat=${userLocationData.latitude}&lon=${userLocationData.longitude}&limit=5&appid=${process.env.API_KEY}`
+  )
+
+  const locationNameData = await locationNameSearch.json()
+
+  const geoName =
+    locationNameData[0].name +
+    ", " +
+    (locationNameData[0].state ? locationNameData[0].state + ", " : "") +
+    locationNameData[0].country
+
   const res = await fetch(
     `https://api.openweathermap.org/data/3.0/onecall?lat=${userLocationData.latitude}&lon=${userLocationData.longitude}&exclude=minutely,alerts&appid=${process.env.API_KEY}`
   )
@@ -120,7 +132,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const typedData = fetchData.parse(data)
   // console.log("typedData: ", typedData)
 
-  return { props: { typedData } }
+  return { props: { typedData, geoName } }
 }
 
 //"lat":36.1563122,"lon":-95.9927436,
