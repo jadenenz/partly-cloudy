@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { hourlyDataType } from "../search-locations/[id]"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next/types"
 import { z } from "zod"
 
@@ -52,29 +51,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     .array()
   if (context && context.params) {
     const id = context.params.id
-    // console.log("XXXXXXXXXXXXXXXXXXID IS: ", id)
     const geoRes = await fetch(
       `https://api.openweathermap.org/geo/1.0/direct?q=${id}&limit=5&appid=${process.env.API_KEY}`
     )
     const geoData = await geoRes.json()
 
     const typedGeoData = geoSchema.parse(geoData)
-    // console.log("GEODATA IS: ", geoData)
-    // const geoName =
-    //   typedGeoData[0].name +
-    //   ", " +
-    //   (typedGeoData[0].state ? typedGeoData[0].state + ", " : "") +
-    //   typedGeoData[0].country
-
-    // console.log("lat is: ", typedGeoData[0].lat)
-    // const res = await fetch(
-    //   `https://api.openweathermap.org/data/3.0/onecall?lat=${typedGeoData[0].lat}&lon=${typedGeoData[0].lon}&exclude=minutely,alerts&appid=${process.env.API_KEY}`
-    // )
-    // const data = await res.json()
-    // console.log("DATA IS: ", data)
-    // // console.log("data: ", data)
-    // const typedData = fetchData.parse(data)
-    // console.log("typedData: ", typedData)
 
     return { props: { typedGeoData } }
   } else return { props: {} }

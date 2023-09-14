@@ -1,12 +1,8 @@
-import { useQuery } from "@tanstack/react-query"
 import { z } from "zod"
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next"
-import { convertToFahrenheit } from "@/lib/temperature-conversions"
-import React, { useState } from "react"
-import { useRouter } from "next/router"
+import type { GetServerSideProps } from "next"
+import React from "react"
 import CitySearchForm from "@/components/city-search-form"
 import Link from "next/link"
-import { NextRequest } from "next/server"
 import MainWeatherDisplay from "@/components/main-weather-display"
 
 const fetchData = z.object({
@@ -73,26 +69,6 @@ export default function Home({ typedData, geoName }: any) {
   )
 }
 
-// export default function Home({
-//   typedData,
-// }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-//   return (
-//     <div className="h-screen">
-//       <div className="w-screen bg-gray-200 navbar">
-//         <Link href="/" className="text-xl normal-case btn btn-ghost">
-//           partlyCloudy
-//         </Link>
-//       </div>
-//       <main>
-//         <CitySearchForm />
-//         <div className="main-current-city">
-//           {convertToFahrenheit(typedData.current.temp)}
-//         </div>
-//       </main>
-//     </div>
-//   )
-// }
-
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   let ip = req.headers["x-real-ip"]
   if (!ip) {
@@ -102,9 +78,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     } else {
       ip = forwardedFor?.split(",")
     }
+    if (ip?.includes("::ffff:127.0.0.1")) {
+      ip = ["8.8.8.8"]
+    }
   }
-
-  console.log("XXXXX IP IS: ", ip)
 
   const userLocation = await fetch(
     `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IP_API_KEY}&ip=${ip}`
@@ -128,15 +105,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     `https://api.openweathermap.org/data/3.0/onecall?lat=${userLocationData.latitude}&lon=${userLocationData.longitude}&exclude=minutely,alerts&appid=${process.env.API_KEY}`
   )
   const data = await res.json()
-  // console.log("data: ", data)
   const typedData = fetchData.parse(data)
-  // console.log("typedData: ", typedData)
 
   return { props: { typedData, geoName } }
 }
-
-//"lat":36.1563122,"lon":-95.9927436,
-
-// https://api.openweathermap.org/data/3.0/onecall?lat=36.1563122&loSn=-95.9927436&exclude=minutely,hourly,daily,alerts&appid=cfa56b7e1c85cefc27cb2887c8ae1708
-
-// http://api.openweathermap.org/geo/1.0/direct?q=tulsa,ok,US&limit=5&appid=cfa56b7e1c85cefc27cb2887c8ae1708

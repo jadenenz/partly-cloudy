@@ -4,8 +4,6 @@ import dayjs from "dayjs"
 import Image from "next/image"
 
 export default function DailyForecast({ dailyData }: hourlyDataType) {
-  console.log(dailyData)
-
   const daysOfTheWeekData = [
     dailyData[0],
     dailyData[1],

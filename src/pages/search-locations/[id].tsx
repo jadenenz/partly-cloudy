@@ -1,13 +1,7 @@
 import CitySearchForm from "@/components/city-search-form"
-import HourlyForecast from "@/components/hourly-forecast"
-import CurrentWeather from "@/components/current-weather"
-import { convertToFahrenheit } from "@/lib/temperature-conversions"
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next"
 import { z } from "zod"
-import AirConditions from "@/components/air-conditions"
-import DailyForecast from "@/components/daily-forecast"
 import Link from "next/link"
-import LocationAlert from "@/components/location-alert"
 import MainWeatherDisplay from "@/components/main-weather-display"
 
 const fetchData = z.object({
@@ -59,7 +53,6 @@ export default function SearchLocation({
   typedGeoData,
   id,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log("typedGeo: ", typedGeoData)
   const locationList = typedGeoData.map((location: any) => {
     return (
       <li key={location.lat}>
@@ -88,20 +81,6 @@ export default function SearchLocation({
         <main>
           <CitySearchForm id={id} />
           <MainWeatherDisplay geoName={geoName} typedData={typedData} />
-          {/* <div className="md:grid md:grid-cols-[3fr 1fr] md:grid-rows-3 gap-3">
-            <div>
-              <CurrentWeather geoName={geoName} typedData={typedData} />
-            </div>
-            <div className="col-start-1">
-              <HourlyForecast hourlyData={typedData.hourly} />
-            </div>
-            <div className="col-start-1">
-              <AirConditions typedData={typedData} />
-            </div>
-            <div className="col-start-2 row-span-3 row-start-2">
-              <DailyForecast dailyData={typedData.daily} />
-            </div>
-          </div> */}
         </main>
       </div>
     </div>
@@ -131,24 +110,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       const geoData = await geoRes.json()
 
       const typedGeoData = geoSchema.parse(geoData)
-      console.log("GEODATA IS: ", geoData)
       const geoName =
         typedGeoData[0].name +
         ", " +
         (typedGeoData[0].state ? typedGeoData[0].state + ", " : "") +
         typedGeoData[0].country
 
-      console.log("lat is: ", typedGeoData[0].lat)
       const res = await fetch(
         `https://api.openweathermap.org/data/3.0/onecall?lat=${typedGeoData[0].lat}&lon=${typedGeoData[0].lon}&exclude=minutely,alerts&appid=${process.env.API_KEY}`
       )
 
       const data = await res.json()
-      console.log("DATA IS: ", data)
       const typedData = fetchData.parse(data)
       return { props: { typedData, geoName, typedGeoData, id } }
     } catch (e) {
-      console.log("error: ", e)
       return { props: {} }
     }
   } else return { props: {} }

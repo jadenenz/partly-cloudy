@@ -3,7 +3,6 @@ import { convertToFahrenheit } from "@/lib/temperature-conversions"
 import { hourlyDataType } from "@/pages/search-locations/[id]"
 
 export default function AirConditions({ typedData }: hourlyDataType) {
-  console.log("hourlyDat: ", typedData)
   return (
     <div className="p-8 mt-6 bg-gray-200 md:mt-0 rounded-2xl">
       <p className="mb-4 font-bold text-gray-500">Air Conditions</p>
@@ -18,9 +17,9 @@ export default function AirConditions({ typedData }: hourlyDataType) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
             </svg>
@@ -40,9 +39,9 @@ export default function AirConditions({ typedData }: hourlyDataType) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>
             </svg>
@@ -62,9 +61,9 @@ export default function AirConditions({ typedData }: hourlyDataType) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
             </svg>
