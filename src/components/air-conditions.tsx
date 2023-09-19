@@ -1,4 +1,3 @@
-// import sunshineSVG from "../assets/sunshine"
 import { convertToFahrenheit } from "@/lib/temperature-conversions"
 import { hourlyDataType } from "@/pages/search-locations/[id]"
 

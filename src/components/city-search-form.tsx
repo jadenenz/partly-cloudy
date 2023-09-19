@@ -14,7 +14,7 @@ export default function CitySearchForm({ id }: any) {
 
   function handleClick(e: React.MouseEvent) {
     e.preventDefault()
-    router.push(`/search-locations/${searchValue}`)
+    router.push(`/search-locations/${encodeURIComponent(searchValue)}`)
   }
 
   return (
