@@ -71,6 +71,6 @@
     @apply border-border;
   }
   body {
-    @apply px-2 bg-background text-foreground;
+    @apply px-2 md:px-0 bg-background text-foreground;
   }
 }
